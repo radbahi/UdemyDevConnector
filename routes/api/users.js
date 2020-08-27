@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator'); // used to be express-validator/check but thst's deprecated
 const gravatar = require('gravatar');
-
 const User = require('../../models/User');
 
 // @route  POST api/users
