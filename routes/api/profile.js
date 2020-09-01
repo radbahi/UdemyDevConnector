@@ -54,10 +54,48 @@ router.post(
       skills,
       youtube,
       facebook,
-      twiiter,
+      twitter,
       instagram,
       linkedin,
     } = req.body;
+
+    // Build profile object
+    const profileFields = {};
+    profileFields.user = req.user.id;
+    if (company) profileFields.company = company; // populate all fields from req
+    if (website) profileFields.website = website;
+    if (location) profileFields.location = location;
+    if (bio) profileFields.bio = bio;
+    if (status) profileFields.status = status;
+    if (githubusername) profileFields.githubusername = githubusername;
+    if (skills) {
+      profileFields.skills = skills.split(',').map((skill) => skill.trim());
+    }
+    // build profile social object
+    profileFields.social = {};
+    if (youtube) profileFields.social.youtube = youtube;
+    if (facebook) profileFields.social.facebook = facebook;
+    if (twitter) profileFields.social.twitter = twitter;
+    if (instagram) profileFields.social.company = company;
+    if (linkedin) profileFields.social.linkedin = linkedin;
+
+    try {
+      let profile = await Profile.findOne({ user: req.user.id }); // need to use await when using mongoose methods because it returns a promise
+
+      if (profile) {
+        // update
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
+
+        return res.json(profile);
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
   }
 );
 
