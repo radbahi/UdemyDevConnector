@@ -56,11 +56,40 @@ router.get('/', auth, async (req, res) => {
 // @access private
 router.get('/:id', auth, async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id); // date: -1 sorts by most recent
+    const post = await Post.findById(req.params.id);
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });
     }
     res.json(post);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      // if the kind of error is an ObjectId error, meaning an invalid id instead of just no id, return below
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+    res.status(500).send('Server error');
+  }
+});
+
+// @route  DELETE api/post/:id
+// @desc   DELETE post by id
+// @access private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      // if the kind of error is an ObjectId error, meaning an invalid id instead of just no id, return below
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+    // check user
+    if (post.user.toString() !== req.user.id) {
+      // req.user.id is a string and post.user is not, so we need to called toString() to make it match
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    await post.remove();
+
+    res.json({ msg: 'Post removed' });
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {
