@@ -38,4 +38,37 @@ router.post(
   }
 );
 
+// @route  GET api/posts
+// @desc   get all posts
+// @access private
+router.get('/', auth, async (req, res) => {
+  try {
+    const posts = await Post.find().sort({ date: -1 }); // date: -1 sorts by most recent
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route  GET api/post/:id
+// @desc   get post by id
+// @access private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id); // date: -1 sorts by most recent
+    if (!post) {
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+    res.json(post);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      // if the kind of error is an ObjectId error, meaning an invalid id instead of just no id, return below
+      return res.status(404).json({ msg: 'Post not found' });
+    }
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
