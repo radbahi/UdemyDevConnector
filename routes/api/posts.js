@@ -110,11 +110,38 @@ router.put('/like/:id', auth, async (req, res) => {
     if (
       post.likes.filter((like) => like.user.toString() == req.user.id).length >
       0
-      // if statement works like this: filter post's likes array for user that clicked on like. if result of filter is greater than 0, that means user is already in array and therefore already liked the post
+      // if statement works like this: filter post's likes array for users that clicked on like. if result of filter is greater than 0, that means user is already in array and therefore already liked the post
     ) {
       return res.status(400).json({ msg: 'Post already liked' });
     }
     post.likes.unshift({ user: req.user.id });
+    await post.save();
+    res.json(post.likes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route  PUT api/post/unlike/:id
+// @desc   unlike a post
+// @access private
+router.put('/unlike/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    // check if post already unliked
+    if (
+      post.likes.filter((like) => like.user.toString() == req.user.id).length ==
+      0
+      // if statement works like this: filter post's likes array for users that clicked on like. if result of filter is = to 0, that means user is not in array and therefore didn't like the post
+    ) {
+      return res.status(400).json({ msg: 'Post not liked' });
+    }
+    // get remove index
+    const removeIndex = post.likes
+      .map((like) => like.user.toString())
+      .indexOf(req.user.id);
+    post.likes.splice(removeIndex, 1);
     await post.save();
     res.json(post.likes);
   } catch (err) {
