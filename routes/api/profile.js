@@ -23,7 +23,7 @@ router.get('/me', auth, async (req, res) => {
     res.json(profile); //... else return profile
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -101,7 +101,7 @@ router.post(
       res.json(profile);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send(err.message);
     }
   }
 );
@@ -118,7 +118,7 @@ router.get('/', async (req, res) => {
     res.json(profile);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -138,7 +138,7 @@ router.get('/user/:user_id', async (req, res) => {
     if (err.kind == 'ObjectId') {
       return res.status(400).json({ msg: 'Profile not found' });
     }
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -161,7 +161,7 @@ router.delete('/', auth, async (req, res) => {
     res.json({ msg: 'User deleted' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -212,7 +212,7 @@ router.put(
       res.json(profile);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send(err.message);
     }
   }
 );
@@ -233,7 +233,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
     res.json(profile); // return profile as response
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -285,7 +285,7 @@ router.put(
       res.json(profile);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send(err.message);
     }
   }
 );
@@ -306,7 +306,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     res.json(profile); // return profile as response
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -337,7 +337,7 @@ router.get('/github/:username', (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 

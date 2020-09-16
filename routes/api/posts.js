@@ -33,7 +33,7 @@ router.post(
       res.json(post);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send(err.message);
     }
   }
 );
@@ -47,7 +47,7 @@ router.get('/', auth, async (req, res) => {
     res.json(posts);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -67,7 +67,7 @@ router.get('/:id', auth, async (req, res) => {
       // if the kind of error is an ObjectId error, meaning an invalid id instead of just no id, return below
       return res.status(404).json({ msg: 'Post not found' });
     }
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -96,7 +96,7 @@ router.delete('/:id', auth, async (req, res) => {
       // if the kind of error is an ObjectId error, meaning an invalid id instead of just no id, return below
       return res.status(404).json({ msg: 'Post not found' });
     }
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -119,7 +119,7 @@ router.put('/like/:id', auth, async (req, res) => {
     res.json(post.likes);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -146,7 +146,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
     res.json(post.likes);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send(err.message);
   }
 });
 
@@ -181,7 +181,7 @@ router.post(
       res.json(post.comments);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send(err.message);
     }
   }
 );
@@ -194,7 +194,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     const post = await Post.findById(req.params.id);
     // get comment from post
     const comment = post.comments.find(
-      (comment) => comment.id === req.params.comment._id
+      (comment) => comment.id === req.params.comment_id
     );
     // make sure comment exists
     if (!comment) {
@@ -215,7 +215,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     res.json(post.comments);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send(err.message);
   }
 });
 
