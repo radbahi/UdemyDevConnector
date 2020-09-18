@@ -25,7 +25,7 @@ const Register = () => {
       try {
         const config = {
           headers: {
-            'Content-Type': 'applcation/json',
+            'Content-Type': 'application/json',
           },
         };
         const body = JSON.stringify(newUser);
@@ -38,12 +38,11 @@ const Register = () => {
   };
   return (
     <Fragment>
-      {' '}
       <h1 className='large text-primary'>Sign Up</h1>
       <p className='lead'>
         <i className='fas fa-user'></i> Create Your Account
       </p>
-      <form className='form' onSubmit={onSubmit}>
+      <form className='form' onSubmit={(e) => onSubmit(e)}>
         <div className='form-group'>
           <input
             type='text'
