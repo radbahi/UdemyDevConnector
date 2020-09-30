@@ -7,5 +7,7 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
+export const GET_PROFILE = 'GET_PROFILE';
+export const PROFILE_ERROR = 'PROFILE_ERROR';
 
 // https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/14555612#questions
