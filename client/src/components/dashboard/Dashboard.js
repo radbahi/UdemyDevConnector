@@ -1,13 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Spinner from '../layout/Spinner';
 import { getCurrentProfile } from '../../actions/profile';
 
-const Dashboard = ({ getCurrentProfile, auth, profile }) => {
+const Dashboard = ({
+  getCurrentProfile,
+  auth: { user },
+  profile: { profile, loading },
+}) => {
   useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]); // had to add in getCurrentProfile inside brackets to prevent dependency error
-  return <div>Dashboard</div>;
+  return loading && profile === null ? (
+    <Spinner></Spinner>
+  ) : (
+    <Fragment>
+      <h1 className='large text-primary'>Dashboard</h1>
+      <p className='lead'>
+        <i className='fas fa-user'>Welcome {user && user.name} </i>
+      </p>
+      {profile !== null ? (
+        <Fragment>has</Fragment>
+      ) : (
+        <Fragment>
+          <p>You have not yet set up a profile. Please add some info.</p>
+          <Link to='/create-profile' className='btn btn-primary my-1'>
+            Create Profile
+          </Link>
+        </Fragment>
+      )}
+    </Fragment>
+  );
 };
 
 Dashboard.propTypes = {
@@ -24,3 +49,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
 
 //https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055356#questions
+//https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055360#questions/12666000
