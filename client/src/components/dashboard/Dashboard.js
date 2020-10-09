@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import { getCurrentProfile } from '../../actions/profile';
+import { deleteAccount, getCurrentProfile } from '../../actions/profile';
 import DashboardActions from './DashboardActions';
 import Experience from './Experience'; //https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055384#questions
 import Education from './Education'; //https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055384#questions
 
 const Dashboard = ({
   getCurrentProfile,
+  deleteAccount,
   auth: { user },
   profile: { profile, loading },
 }) => {
@@ -29,6 +30,11 @@ const Dashboard = ({
           <DashboardActions />
           <Experience experience={profile.experience}></Experience>
           <Education education={profile.education}></Education>
+          <div className='my-2'>
+            <button className='btn btn-danger' onClick={() => deleteAccount()}>
+              <i className='fas fa-user-minus'> Delete my account</i>
+            </button>
+          </div>
         </Fragment>
       ) : (
         <Fragment>
@@ -44,6 +50,7 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
+  deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
 };
@@ -53,7 +60,10 @@ const mapStateToProps = (state) => ({
   profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
+  Dashboard
+);
 
 //https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055356#questions
 //https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055360#questions/12666000
+// delete account https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/14555684#questions
