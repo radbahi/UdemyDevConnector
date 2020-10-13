@@ -13,10 +13,10 @@ const Profile = ({
 }) => {
   useEffect(() => {
     getProfileByID(match.params.id);
-  }, [getProfileByID]);
+  }, [getProfileByID, match.params.id]);
   return (
     <Fragment>
-      {profile === null || loading ? (
+      {profile === null || loading ? ( // MAY SPIN FOREVER IF LOGGED OUT IN THIS PAGE
         <Spinner />
       ) : (
         <Fragment>
