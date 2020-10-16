@@ -14,5 +14,7 @@ export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const PROFILE_ERROR = 'PROFILE_ERROR';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export const GET_POSTS = 'GET_POSTS';
+export const POST_ERROR = 'POST_ERROR';
 
 // https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/14555612#questions
