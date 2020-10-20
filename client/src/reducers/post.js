@@ -1,4 +1,9 @@
-import { GET_POSTS, POST_ERROR, UPDATE_LIKES } from '../actions/types';
+import {
+  GET_POSTS,
+  POST_ERROR,
+  UPDATE_LIKES,
+  DELETE_POST,
+} from '../actions/types';
 
 const initialState = {
   posts: [],
@@ -12,6 +17,12 @@ export default function (state = initialState, action) {
   switch (type) {
     case GET_POSTS:
       return { ...state, posts: payload, loading: false };
+    case DELETE_POST: // https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055464#overview
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== payload),
+        loading: false,
+      };
     case POST_ERROR:
       return { ...state, error: payload, loading: false };
     case UPDATE_LIKES: // https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055462#questions
