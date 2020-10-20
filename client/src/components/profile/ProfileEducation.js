@@ -24,7 +24,7 @@ const ProfileEducation = ({
 );
 
 ProfileEducation.propTypes = {
-  education: PropTypes.array.isRequired, //getting object assignment error despite it being assigned as array??
+  education: PropTypes.object.isRequired, //getting object assignment error despite it being assigned as array??
 };
 
 export default ProfileEducation;
