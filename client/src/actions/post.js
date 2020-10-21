@@ -7,6 +7,8 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
 } from './types';
 
 // get posts https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055448#questions
@@ -86,6 +88,42 @@ export const getPost = (postID) => async (dispatch) => {
   try {
     const res = await axios.get(`/api/posts/${postID}`);
     dispatch({ type: GET_POST, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//add comment https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055478#overview
+export const addComment = (postID, formData) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  try {
+    const res = await axios.post(
+      `/api/posts/comment/${postID}`,
+      formData,
+      config
+    );
+    dispatch({ type: ADD_COMMENT, payload: res.data });
+    dispatch(setAlert('Comment added', 'success'));
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//delete comment https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/10055478#overview
+export const deleteComment = (postID, commentID) => async (dispatch) => {
+  try {
+    dispatch({ type: REMOVE_COMMENT, payload: commentID });
+    dispatch(setAlert('Comment deleted', 'success'));
   } catch (err) {
     dispatch({
       type: POST_ERROR,
