@@ -1,0 +1,6 @@
+{
+  "mongoURI": " mongodb+srv://radbahi:radbahi@udemydevconnector.d509j.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "githubClientId": "dc0d51d5e7fbefd3218d",
+  "githubSecret": "8270feea04b43e5e48902c0856b3830ba007b5eb"
+}

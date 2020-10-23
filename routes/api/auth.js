@@ -36,7 +36,6 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    console.log(req.body);
 
     const { email, password } = req.body; // pulls out the corresponding data
 
@@ -44,7 +43,9 @@ router.post(
       let user = await User.findOne({ email });
 
       if (!user) {
-        res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid credentials' }] });
       }
 
       const isMatch = await bcrypt.compare(password, user.password); // compares password from req.body to user password

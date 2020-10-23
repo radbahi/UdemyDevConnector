@@ -5,6 +5,7 @@ const config = require('config');
 const auth = require('../../middleware/auth'); // get auth middleware then add as paramater to get route
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const { check, validationResult } = require('express-validator');
 
 // @route  GET api/profile/me
@@ -71,7 +72,7 @@ router.post(
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
     if (skills) {
-      profileFields.skills = skills.split(',').map((skill) => skill.trim());
+      profileFields.skills = skills.split(' ,').map((skill) => skill.trim()); // added whitespace incase a skill gets added with spaces in them. ie "ruby on rails"
     }
     // build profile social object
     profileFields.social = {};
@@ -112,10 +113,8 @@ router.post(
 router.get('/', async (req, res) => {
   // don't need auth middleware for this one
   try {
-    const profiles = await Profile.findOne({
-      user: req.params.user_id,
-    }).populate('user', ['name', 'avatar']);
-    res.json(profile);
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']); //Profile.find edited after video because it wasn't working properly. got line from github repo.
+    res.json(profiles);
   } catch (err) {
     console.error(err.message);
     res.status(500).send(err.message);
@@ -128,11 +127,13 @@ router.get('/', async (req, res) => {
 router.get('/user/:user_id', async (req, res) => {
   // don't need auth middleware for this one
   try {
-    const profile = await Profile.find().populate('user', ['name', 'avatar']);
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate('user', ['name', 'avatar']);
     if (!profile) {
       return res.status(400).json({ msg: 'Profile not found' });
     }
-    res.json(profiles);
+    res.json(profile);
   } catch (err) {
     console.error(err.message);
     if (err.kind == 'ObjectId') {
@@ -148,7 +149,13 @@ router.get('/user/:user_id', async (req, res) => {
 router.delete('/', auth, async (req, res) => {
   // don't need auth middleware for this one
   try {
-    //@todo remove user's posts
+    //@todo remove user's posts TESTING OUT JUST UPDATING AND REMOVING USER + INFO FROM POST INSTEAD OF DELETING WHOLE POST https://www.udemy.com/course/mern-stack-front-to-back/learn/lecture/14555684#questions
+    await Post.updateMany({
+      user: req.user.id,
+      name: 'This account has been deleted',
+      avatar: null,
+    });
+
     // will remove profile
     await Profile.findOneAndRemove({
       user: req.user.id,
